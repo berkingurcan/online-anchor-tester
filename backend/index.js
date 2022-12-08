@@ -42,19 +42,7 @@ app.post('/run', async (req, res) => {
   const projectRootPath = path.join(__dirname, './repo/hello-world');
   const testDir = path.join(__dirname, './repo/hello-world/tests');
   
-  const mocha = new Mocha(
-
-  );
-  fs.readdirSync(testDir)
-  .filter(function(file) {
-    return path.extname(file) === '.ts';
-  })
-  .forEach(function(file) {
-    mocha.addFile(path.join(testDir, file));
-  });
-  const result = await mocha.run(function(failures) {
-    process.exitCode = failures ? 1 : 0; // exit with non-zero status if there were failures
-  });
+  
 
   console.log("Working")
   console.log(result)

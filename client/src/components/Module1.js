@@ -3,6 +3,7 @@ import Editor, { useMonaco, loader, EditorProps } from "@monaco-editor/react";
 import React, {useState} from 'react';
 import codes from '../codes/codes.js'
 import codeBlocks from '../codes/codeblocks';
+import answers from '../codes/answers.js'
 import { ChakraProvider } from '@chakra-ui/react'
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/react'
@@ -14,34 +15,19 @@ import { CodeBlock, dracula } from "react-code-blocks";
 const Module1 = () => {
   const [code, setCode] = useState(codes[1])
   const [result, setResult] = useState()
-  const [spinner, setSpinner] = useState(false)
+  const [spinner, setSpinner] = useState(false)
 
 
   const handleSubmit = async () => {
     setSpinner(true)
 
-    const payload = {
-      format: 'ts',
-      code: code,
-      pathname: 'repo/module1/src',
-      filename: 'MultiplyTwo.ts'
-    }
-    console.log(payload.code)
-
-    // TODO create ENV host
-    const output = await axios.post(
-      "http://localhost:5000/run/module1",
-      payload
-    )
-
-    console.log(output.data.result.results.success)
-    setSpinner(false)
-
-    if (output.data.result.results.success) {
+    if (code === answers[2]) {
       setResult('Congratulations! You Passed all tests! Go to next task')
     } else {
       setResult('Sorry, your code is incorrect! Please try again')
     }
+   
+    setSpinner(false)
   }
 
   return (
@@ -51,52 +37,51 @@ const Module1 = () => {
           <Editor
             height="90vh"
             theme="vs-dark"
-            defaultLanguage="typescript"
+            defaultLanguage="rust"
             defaultValue= {codes[2]}
             onChange={ (e) => setCode(e)}
           />
         </div>
         <div className="column">
           <h2>
-            TASK 1: Double It!
+            DEMO TASK: SET DATA
           </h2>
           <br></br>
 
           <p className='texts'>
-            Firstly, please take a look this <a href='https://docs.minaprotocol.com/zkapps/tutorials/hello-world' target="_blank"><span>tutorial.</span></a>
+
             <br></br>
-            First task is:
-            <p>Create Smart Contract which you can double your Field state. It is simple: just like the tutorial above you will be double your number instead of take square :) In other words, multiply with 2</p>
+            Task is:
+            <p>The Account type is used when an instruction is interested in the deserialized data of the account. Consider the following example where we set some data in an account:</p>
             <p>
-              <li>Firstly, create Create Field State variable 'num' under the:
+              <li>First, create u64 data variable in MyAccount struct like here:
               <CodeBlock
-                text={codeBlocks[1]}
-                language="typescript"
+                text={codeBlocks[2]}
+                language="rust"
                 showLineNumbers={false}
                 theme={dracula}
                 wrapLines
               />
               </li>
-              <li>While deploying your contract set your state value to 4 in your deploy method:
+              <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. 
               <CodeBlock
-                text={codeBlocks[2]}
-                language="typescript"
+                text={codeBlocks[3]}
+                language="rust"
                 showLineNumbers={false}
                 theme={dracula}
                 wrapLines
               />
               </li>
               <li>
-                Lastly, pass the field parameter like the tutorial:
+                Lastly, in the set_data function, set input data to MyAccount's data:
                   <CodeBlock
-                  text={codeBlocks[3]}
-                  language="typescript"
+                  text={codeBlocks[4]}
+                  language="rust"
                   showLineNumbers={false}
                   theme={dracula}
                   wrapLines
                 />
               </li>
-              <li>and if it is double of 'num' set the value to your new input</li>
             </p>
           </p>
           

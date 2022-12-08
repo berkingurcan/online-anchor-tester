@@ -1,6 +1,6 @@
 import rTabs from '../utils/rTabs';
 
-const codes = {
+const answers = {
     1: rTabs(`
     use anchor_lang::prelude::*;
 
@@ -10,7 +10,8 @@ const codes = {
     pub mod hello_world {
         use super::*;
 
-        pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+        pub fn hello_world(ctx: Context<Initialize>) -> Result<()> {
+            msg!("Hello world, from solana smart contract");
             Ok(())
         }
     }
@@ -28,6 +29,7 @@ const codes = {
     mod hello_anchor {
         use super::*;
         pub fn set_data(ctx: Context<SetData>, data: u64) -> Result<()> {
+            ctx.accounts.my_account.data = data;
             Ok(())
         }
     }
@@ -35,12 +37,13 @@ const codes = {
     #[account]
     #[derive(Default)]
     pub struct MyAccount {
-
+        data: u64
     }
 
     #[derive(Accounts)]
     pub struct SetData<'info> {
-        
+        #[account(mut)]
+        pub my_account: Account<'info, MyAccount>
     }
     
     `),
@@ -52,4 +55,4 @@ const codes = {
     `)
 }
 
-export default codes
+export default answers
