@@ -10,7 +10,6 @@ const deleteFile = async (pathname, filename) => {
         fs.mkdirSync(dirCodes, {recursive: true});
     }
 
-    //const filename = "Add.ts";
     const filepath = path.join(dirCodes, filename);
 
     if(!filepath == undefined) {

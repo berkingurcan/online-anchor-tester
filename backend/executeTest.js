@@ -11,8 +11,8 @@ const executeTest = async () => {
     }) */
 
     try {
-        const result = await spawnProcess("npm test --ci --no-color", {
-          cwd: "./repo/module0",
+        const result = await spawnProcess("anchor test", {
+          cwd: "./repo/hello-world",
         });
     
         return {status: true, result};

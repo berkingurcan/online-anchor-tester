@@ -17,10 +17,10 @@ const Module1 = () => {
   const handleSubmit = async () => {
     setSpinner(true)
     const payload = {
-      format: 'ts',
+      format: 'rs',
       code: code,
-      pathname: 'repo/module0/src',
-      filename: 'Add.ts'
+      pathname: 'repo/hello-world/programs/hello-world/src',
+      filename: 'lib.rs'
     }
     console.log(payload.code)
 
@@ -32,12 +32,15 @@ const Module1 = () => {
     
     setSpinner(false)
 
-    console.log(output.data.result.results.success)
+    console.log(output)
+
+    /* console.log(output.data.result.results.success)
     if (output.data.result.results.success) {
       setResult('Congratulations! You Passed all tests! Go to next task')
     } else {
       setResult('Sorry, your code is incorrect! Please try again')
-    }
+    } */
+
   }
 
   return (
@@ -47,14 +50,14 @@ const Module1 = () => {
           <Editor
             height="90vh"
             theme="vs-dark"
-            defaultLanguage="typescript"
+            defaultLanguage="rust"
             defaultValue= {codes[1]}
             onChange={ (e) => setCode(e)}
           />
         </div>
         <div className="column">
           <h2>
-            MODULE 0: DEMO ADD.ts
+            MODULE 0: DEMO HELLO WORLD ANCHOR
           </h2>
 
           <Button onClick={handleSubmit} colorScheme='teal' size='md'>

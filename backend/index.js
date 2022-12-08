@@ -1,14 +1,15 @@
 const { urlencoded } = require('express');
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const { executeTest } = require('./executeTest');
 const { generateFile } = require('./generateFile');
 const { deleteFile } = require('./deleteFile');
 const { readReport } = require('./readReport');
 const { deleteReport } = require('./deleteReport');
-const { runCLI } = require('jest');
 const cors = require('cors')
-// const { ProjectConfig } = require('jest');
+const { exec, spawn, spawnSync } = require('child_process');
+const Mocha = require('mocha');
 
 const app = express();
 
@@ -38,34 +39,26 @@ app.post('/run', async (req, res) => {
     // read output.txt and return as a response
     // delete
 
-    const projectRootPath = path.join(__dirname, './repo');
+  const projectRootPath = path.join(__dirname, './repo/hello-world');
+  const testDir = path.join(__dirname, './repo/hello-world/tests');
+  
+  const mocha = new Mocha(
 
-    const modulePath = 'module0'
-    
-    const jestConfig = {
-        roots: [`./${modulePath}/src`],
-        testRegex: '\\Add.test\\.ts$',
-        verbose: true,
-        preset: 'ts-jest/presets/default-esm',
-        testEnvironment: 'node',
-        globals: {
-          'ts-jest': {
-            useESM: true,
-          },
-        },
-        transform: {
-          '^.+\\.(t)s$': 'ts-jest',
-          '^.+\\.(j)s$': 'babel-jest',
-        },
-        resolver: '<rootDir>/jest-resolver.cjs',
-        transformIgnorePatterns: [
-          `<rootDir>/${modulePath}/node_modules/(?!snarkyjs/node_modules/tslib)`,
-        ],
-    };
+  );
+  fs.readdirSync(testDir)
+  .filter(function(file) {
+    return path.extname(file) === '.ts';
+  })
+  .forEach(function(file) {
+    mocha.addFile(path.join(testDir, file));
+  });
+  const result = await mocha.run(function(failures) {
+    process.exitCode = failures ? 1 : 0; // exit with non-zero status if there were failures
+  });
 
-    const result = await runCLI(jestConfig , [projectRootPath]);
-
-    return res.json({result});
+  console.log("Working")
+  console.log(result)
+  return res.json({result});
 });
 
 app.post('/run/module1', async (req, res) => {
